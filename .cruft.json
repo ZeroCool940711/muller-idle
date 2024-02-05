@@ -1,0 +1,25 @@
+{
+  "template": "https://github.com/ZeroCool940711/cookiecutter-python-template",
+  "commit": "139588b2bfc2f7ad485410e1f208435c96f84476",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Alejandro Gil",
+      "company_name": "Sygil-Dev",
+      "email": "alejandrogilelias940711@gmail.com",
+      "project_name": "Muller Idle",
+      "project_slug": "muller-idle",
+      "module_name": "muller_idle",
+      "project_short_description": "Muller Idle takes the core of what makes an adventure game so addictive and strips it down to its purest form!",
+      "package_manager": "poetry",
+      "use_notebooks": "no",
+      "use_docker": "no",
+      "ci_pipeline": "none",
+      "create_cli": "no",
+      "config_file": "none",
+      "code_formatter": "black",
+      "editor_settings": "vscode",
+      "_template": "https://github.com/ZeroCool940711/cookiecutter-python-template"
+    }
+  }
+}
