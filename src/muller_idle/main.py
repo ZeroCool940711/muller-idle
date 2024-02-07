@@ -23,8 +23,6 @@ def index_page(data: fs.Datasy):
 
     # Set the page transitions for each platform.
     theme = ft.Theme()
-    theme.page_transitions.android = ft.PageTransitionTheme.OPEN_UPWARDS
-    theme.page_transitions.ios = ft.PageTransitionTheme.CUPERTINO
     theme.page_transitions.macos = ft.PageTransitionTheme.FADE_UPWARDS
     theme.page_transitions.linux = ft.PageTransitionTheme.ZOOM
     theme.page_transitions.windows = ft.PageTransitionTheme.NONE
@@ -56,8 +54,6 @@ def index_page(data: fs.Datasy):
 @app.page(route="/counter")
 def counter_page(data: fs.Datasy):
     page = data.page
-
-    page.title = "Counter"
 
     txt_number = ft.TextField(value="0", text_align="right", width=100)
 
