@@ -10,11 +10,13 @@ from .config.db.Model import Options
 if not os.path.exists("db"):
     os.mkdir("db")
 
-APP_ID = f"muller_idle.sygil_dev.version.{muller_idle.__version__}"
+module_name = muller_idle
+
+APP_ID = f"muller_idle.Sygil-Dev.version.{module_name.__version__}"
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
 
 
-def set_icon(icon_path):
+def set_icon(icon_path="src/muller_idle/assets/icon.ico"):
     user32 = ctypes.windll.user32
     hwnd = user32.GetForegroundWindow()
     ICON_SMALL = 0

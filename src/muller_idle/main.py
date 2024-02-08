@@ -5,7 +5,7 @@ from nicegui import ui
 
 from muller_idle.utils import int_to_float, set_icon
 
-set_icon("src/muller_idle/assets/icon.ico")
+set_icon()
 
 
 ui.header(value="Muller Idle")
@@ -14,11 +14,10 @@ with ui.row() as row1:
     ui.button("Start", on_click=lambda: timer.activate())
     ui.button(
         "Stop",
+        color="red",
         on_click=lambda: [timer.deactivate(), slider.set_value(0.0)],
     )
     ui.button("Reset", on_click=lambda: slider.set_value(0.0))
-
-# ui.separator()
 
 with ui.row().classes("w-96 gap-1 no-wrap") as row2:
     time_label = ui.label("Time:")
@@ -32,14 +31,10 @@ with ui.row().classes("w-96 gap-1 no-wrap") as row2:
         ),
     )
 
+    # the timer is deactivated by default
     timer.deactivate()
 
-    ui.button("Start", on_click=lambda: timer.activate())
-    ui.button(
-        "Stop",
-        color="red",
-        on_click=lambda: [timer.deactivate(), slider.set_value(0.0)],
-    )
+ui.separator()
 
 
 logging.basicConfig(level=logging.INFO)
