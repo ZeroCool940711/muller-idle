@@ -1,11 +1,34 @@
+import ctypes
 import os
 
 from whoosh import index
+
+import muller_idle
 
 from .config.db.Model import Options
 
 if not os.path.exists("db"):
     os.mkdir("db")
+
+APP_ID = f"muller_idle.sygil_dev.version.{muller_idle.__version__}"
+ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
+
+
+def set_icon(icon_path):
+    user32 = ctypes.windll.user32
+    hwnd = user32.GetForegroundWindow()
+    ICON_SMALL = 0
+    ICON_BIG = 1
+    WM_SETICON = 0x0080
+
+    LR_LOADFROMFILE = 0x00000010
+    hinst = ctypes.windll.kernel32.LoadLibraryW(None)
+    hicon = user32.LoadImageW(
+        hinst, os.path.abspath(icon_path), 1, 0, 0, LR_LOADFROMFILE
+    )
+
+    user32.SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
+    user32.SendMessageW(hwnd, WM_SETICON, ICON_BIG, hicon)
 
 
 def first_run():
@@ -79,6 +102,20 @@ def get_options(dirname="db", indexname="options", last_version=True):
         else:
             # return all versions
             return list(results)
+
+
+def int_to_float(integer, multiplier=1.0):
+    """Converts an integer to a float between 0.0 and 1.0, optionally multiplied by a factor.
+
+    Args:
+      integer: The integer to convert.
+      multiplier: An optional factor to multiply the normalized value by (default: 1.0).
+
+    Returns:
+      A float between 0.0 and 1.0, optionally multiplied by the multiplier.
+    """
+
+    return float(integer) / float(2 ** integer.bit_length()) * multiplier
 
 
 # defaults = set_default_config()

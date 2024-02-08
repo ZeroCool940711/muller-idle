@@ -6,22 +6,15 @@
 	],
 	"settings": {},
 	"launch": {
+		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Run Flet UI",
+				"name": "Run NiceGUI",
 				"type": "debugpy",
 				"request": "launch",
-				"program": ".venv/Scripts/flet.exe",
-				"args": [
-					"run",
-					"src/muller_idle/main.py",
-					"-d",
-					"-r",
-				],
-				"env": {
-					"PYDEVD_DISABLE_FILE_VALIDATION": "1"
-				}
+				"program": "src/muller_idle/main.py"
 			}
 		]
 	}
+}
 }

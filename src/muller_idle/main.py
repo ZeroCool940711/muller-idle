@@ -1,90 +1,54 @@
-import flet as ft
-import flet_easy as fs
+import logging
+import os
 
-from muller_idle.utils import first_run, get_options
+from nicegui import ui
 
-if_first_run = first_run()
+from muller_idle.utils import int_to_float, set_icon
 
-options = get_options()
-
-app = fs.FletEasy(route_init="/")
+set_icon("src/muller_idle/assets/icon.ico")
 
 
-# We add a page
-@app.page(route="/")
-def index_page(data: fs.Datasy):
-    page = data.page
+ui.header(value="Muller Idle")
 
-    # Most of these hardcoded options bellow will later go into the Options menu, to a db or config file and loaded from there.
+with ui.row() as row1:
+    ui.button("Start", on_click=lambda: timer.activate())
+    ui.button(
+        "Stop",
+        on_click=lambda: [timer.deactivate(), slider.set_value(0.0)],
+    )
+    ui.button("Reset", on_click=lambda: slider.set_value(0.0))
 
-    # Set the page title and theme mode.
-    page.title = options["app_title"]
-    page.theme_mode = options["theme_mode"]
+# ui.separator()
 
-    # Set the page transitions for each platform.
-    theme = ft.Theme()
-    theme.page_transitions.macos = ft.PageTransitionTheme.FADE_UPWARDS
-    theme.page_transitions.linux = ft.PageTransitionTheme.ZOOM
-    theme.page_transitions.windows = ft.PageTransitionTheme.NONE
-    page.theme = theme
+with ui.row().classes("w-96 gap-1 no-wrap") as row2:
+    time_label = ui.label("Time:")
+    slider = ui.linear_progress(
+        value=float(f"{0.0:.2f}"), size="30px", show_value=False
+    )
+    timer = ui.timer(
+        1,
+        lambda: slider.set_value(
+            (slider.value + 0.1) % int_to_float(100, multiplier=1.0)
+        ),
+    )
 
-    # set padding to 0 to remove the default padding or the menu bar and bottom bar will look out of place.
-    page.padding = 0
+    timer.deactivate()
 
-    # set to auto to enable scrollbars so we can see if anything have been pushed off the screen
-    # page.scroll = "AUTO"
-
-    page.window_maximized = True
-
-    def go_counter(e):
-        page.go("/counter")
-
-    return ft.View(
-        route="/",
-        controls=[
-            ft.Text("Home page"),
-            ft.FilledButton("Go to Counter", on_click=go_counter),
-        ],
-        vertical_alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+    ui.button("Start", on_click=lambda: timer.activate())
+    ui.button(
+        "Stop",
+        color="red",
+        on_click=lambda: [timer.deactivate(), slider.set_value(0.0)],
     )
 
 
-# We add a second page
-@app.page(route="/counter")
-def counter_page(data: fs.Datasy):
-    page = data.page
-
-    txt_number = ft.TextField(value="0", text_align="right", width=100)
-
-    def minus_click(e):
-        txt_number.value = str(int(txt_number.value) - 1)
-        page.update()
-
-    def plus_click(e):
-        txt_number.value = str(int(txt_number.value) + 1)
-        page.update()
-
-    def go_home(e):
-        page.go("/")
-
-    return ft.View(
-        route="/counter",
-        controls=[
-            ft.Row(
-                [
-                    ft.IconButton(ft.icons.REMOVE, on_click=minus_click),
-                    txt_number,
-                    ft.IconButton(ft.icons.ADD, on_click=plus_click),
-                ],
-                alignment="center",
-            ),
-            ft.FilledButton("Go to Home", on_click=go_home),
-        ],
-        vertical_alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-    )
-
-
-# We run the application
-app.run()
+logging.basicConfig(level=logging.INFO)
+ui.run(
+    native=True,
+    # window_size=(800, 400),
+    # fullscreen=False,
+    # frameless=True,
+    reload=True,
+    dark=True,
+    title="Muller Idle",
+)
