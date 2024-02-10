@@ -1,6 +1,8 @@
 import datetime
+
 import flet
 from flet import Column, ElevatedButton, Page, Text
+
 
 def start_timer(e):
     time_display = e.control.data
@@ -17,11 +19,13 @@ def start_timer(e):
             time_display.update()
             break
 
+
 def main(page: Page):
     time_display = Text(value="0:05")
     start_button = ElevatedButton(text="Start", on_click=start_timer, data=time_display)
 
     page.add(Column([time_display, start_button]))
     page.update()
+
 
 flet.app(target=main)
