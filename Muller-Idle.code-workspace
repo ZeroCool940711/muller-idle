@@ -11,10 +11,22 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
-				"name": "Run NiceGUI",
+				"name": "Run NiceGUI main.py",
 				"type": "debugpy",
 				"request": "launch",
 				"program": "src/muller_idle/main.py",
+				"env": {
+					"PYDEVD_DISABLE_FILE_VALIDATION": "1",
+					"PYDEVD_USE_CYTHON": "YES",
+					"PYDEVD_CYTHONIZE": "YES",
+					"PYDEVD_CYTHONIZE_THRESHOLD": "0",
+				}
+			},
+			{
+				"name": "Run Python File",
+				"type": "debugpy",
+				"request": "launch",
+				"program": "${file}",
 				"env": {
 					"PYDEVD_DISABLE_FILE_VALIDATION": "1",
 					"PYDEVD_USE_CYTHON": "YES",

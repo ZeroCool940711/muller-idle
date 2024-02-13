@@ -2,5 +2,6 @@
 # It should not contain dependencies for tests, developer tools, etc. (see requirements-dev.txt)
 versioningit
 nicegui
+pygetwindow
 git+https://github.com/Sygil-Dev/whoosh-reloaded
 -e .

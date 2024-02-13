@@ -1,10 +1,9 @@
 import logging
 
-from colorama import init
-from nicegui import app, context, ui
+from nicegui import app, server, ui
 
-from muller_idle import colors, icons
-from muller_idle.utils import int_to_float, set_icon
+from muller_idle import color, icon
+from muller_idle.utils import set_icon
 
 set_icon()
 
@@ -17,7 +16,25 @@ ui.query(".nicegui-content").classes("p-0")
 
 ui.page_title(title)
 
-# with ui.scroll_area().style("width: 50vh; height: 100vh;"):
+
+class Aligments:
+    def __init__(self):
+        self.start = "start"
+        self.end = "end"
+        self.center = "center"
+        self.space_between = "space-between"
+        self.space_around = "space-around"
+        self.space_evenly = "space-evenly"
+
+
+def close_app():
+    if app.native.main_window:
+        if app.native.start_args.get("reload", False):
+            app.shutdown()
+        else:
+            app.native.main_window.destroy()
+    else:
+        server.Server.instance.should_exit = True
 
 
 class SideBar(ui.element):
@@ -28,40 +45,43 @@ class SideBar(ui.element):
         self.menu_width = "width: 100%"
 
         with ui.left_drawer().style("gap: 1px") as self.left_drawer:
-            ui.label(title).style("font-size: 2rem; align-self: center;")
-            ui.separator()
+            ui.label(title).style("font-size: 2rem; align-items: center; ")
+            ui.separator().style(self.menu_width)
             ui.button(
                 "Home",
-                icon=icons.HOME,
-                color=colors.PRIMARY,
+                icon=icon.HOME,
+                color=color.PRIMARY,
                 on_click=lambda e: ui.open("/"),
             ).style(self.menu_width)
 
             ui.button(
                 "Settings",
-                icon=icons.SETTINGS,
-                color=colors.PRIMARY,
+                icon=icon.SETTINGS,
+                color=color.PRIMARY,
                 on_click=lambda e: ui.open("/settings"),
             ).style(self.menu_width)
 
             ui.button(
                 "About",
-                icon=icons.INFO,
-                color=colors.PRIMARY,
+                icon=icon.INFO,
+                color=color.PRIMARY,
                 on_click=lambda e: ui.open("/about"),
             ).style(self.menu_width)
 
-            ui.separator().style(self.menu_width)
+            ui.space().classes("end-0")
 
-            ui.button("Exit", icon=icons.EXIT_TO_APP, color=colors.RED).style(
-                self.menu_width
-            )
+            ui.button(
+                "Exit",
+                icon=icon.EXIT_TO_APP,
+                color=color.RED,
+                on_click=lambda e: close_app(),
+            ).style(self.menu_width).classes("end-0")
 
-        ui.button(on_click=lambda: self.left_drawer.toggle(), icon=icons.MENU)
+        ui.button(on_click=lambda: self.left_drawer.toggle(), icon=icon.MENU)
 
 
 @ui.page("/")
-async def index():
+async def index() -> None:
     SideBar()
     ui.label("Home Page")
 
@@ -73,7 +93,7 @@ async def settings():
 
 
 @ui.page("/about")
-def settings():
+def about() -> None:
     SideBar()
     ui.label("About Page")
 
